@@ -4,6 +4,17 @@ Live Aare river water temperature in your macOS menubar.
 
 ## Install
 
+### Homebrew (recommended)
+
+```bash
+brew tap jl115/aare
+brew install --cask aare-temp-menubar
+```
+
+> **Note:** The app is ad-hoc signed. macOS may show a security warning on first launch. Right-click the app in Finder and choose **Open** to bypass it.
+
+### Developer (uv)
+
 Requires [uv](https://github.com/astral-sh/uv):
 
 ```bash
