@@ -38,6 +38,7 @@ open dist/AareTempBar.app
 ```
 
 The build script will:
+
 1. Build the `.app` bundle with PyInstaller
 2. Sign it with your Developer ID certificate
 3. Submit it to Apple for notarization
@@ -51,14 +52,14 @@ The app will open without any Gatekeeper warnings on any user's machine.
 
 Go to **Settings > Secrets and variables > Actions** in your repository and add:
 
-| Secret | Description | How to Get |
-|--------|-------------|------------|
-| `CODESIGN_IDENTITY` | Exact name of your Developer ID certificate. | `security find-identity -v -p codesigning` |
-| `MACOS_CERTIFICATE` | Base64-encoded `.p12` Developer ID certificate + private key. | Export from Keychain Access as `.p12`, then `base64 -i cert.p12` |
-| `MACOS_CERTIFICATE_PASSWORD` | Password for the `.p12` file. | Set when exporting from Keychain Access. |
-| `NOTARIZATION_APPLE_ID` | Your Apple ID email. | `your-apple-id@example.com` |
-| `NOTARIZATION_TEAM_ID` | Your Apple Developer Team ID. | From Apple Developer Portal > Membership. |
-| `NOTARIZATION_PASSWORD` | App-Specific Password for notarization. | Generated at [appleid.apple.com](https://appleid.apple.com). |
+| Secret                       | Description                                                   | How to Get                                                       |
+| ---------------------------- | ------------------------------------------------------------- | ---------------------------------------------------------------- |
+| `CODESIGN_IDENTITY`          | Exact name of your Developer ID certificate.                  | `security find-identity -v -p codesigning`                       |
+| `MACOS_CERTIFICATE`          | Base64-encoded `.p12` Developer ID certificate + private key. | Export from Keychain Access as `.p12`, then `base64 -i cert.p12` |
+| `MACOS_CERTIFICATE_PASSWORD` | Password for the `.p12` file.                                 | Set when exporting from Keychain Access.                         |
+| `NOTARIZATION_APPLE_ID`      | Your Apple ID email.                                          | `your-apple-id@example.com`                                      |
+| `NOTARIZATION_TEAM_ID`       | Your Apple Developer Team ID.                                 | From Apple Developer Portal > Membership.                        |
+| `NOTARIZATION_PASSWORD`      | App-Specific Password for notarization.                       | Generated at [appleid.apple.com](https://appleid.apple.com).     |
 
 ### Alternative: Notarization via Keychain Profile
 
@@ -74,8 +75,8 @@ Then set GitHub Secret `NOTARIZATION_KEYCHAIN_PROFILE` to the profile name.
 
 1. Update the version in `pyproject.toml`.
 2. Commit and push.
-3. Tag the release: `git tag v0.9.0`
-4. Push the tag: `git push origin v0.9.0`
+3. Tag the release: `git tag v0.9.4`
+4. Push the tag: `git push origin v0.9.4`
 5. GitHub Actions will automatically:
    - Build the `.app` with PyInstaller
    - Sign it with your Developer ID certificate
@@ -119,3 +120,4 @@ Ensure `xcrun stapler staple` completed successfully in the build log. If the st
 ```bash
 xcrun stapler staple dist/AareTempBar.app
 ```
+
