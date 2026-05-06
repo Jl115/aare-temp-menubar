@@ -59,7 +59,7 @@ app = BUNDLE(
     exe,
     name="AareTempBar.app",
     icon=None,
-    bundle_identifier="ch.evosys.aare-temp-menubar",
+    bundle_identifier="ch.jl115.aare-temp-menubar",
     info_plist={
         "CFBundleName": "AareTempBar",
         "CFBundleDisplayName": "AareTempBar",

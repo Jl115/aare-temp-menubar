@@ -22,15 +22,34 @@ jobs:
       - name: Install dependencies
         run: |
           uv sync --frozen --group dev
-      - name: Build app bundle
+
+      - name: Install Developer ID certificate
+        env:
+          MACOS_CERTIFICATE: ${{ secrets.MACOS_CERTIFICATE }}
+          MACOS_CERTIFICATE_PASSWORD: ${{ secrets.MACOS_CERTIFICATE_PASSWORD }}
+        run: |
+          echo "$MACOS_CERTIFICATE" | base64 --decode > certificate.p12
+          security create-keychain -p "ci" build.keychain
+          security default-keychain -s build.keychain
+          security unlock-keychain -p "ci" build.keychain
+          security import certificate.p12 -k build.keychain -P "$MACOS_CERTIFICATE_PASSWORD" -T /usr/bin/codesign
+          security set-key-partition-list -S apple-tool:,apple: -s -k "ci" build.keychain
+
+      - name: Build, sign, notarize, and staple
+        env:
+          CODESIGN_IDENTITY: ${{ secrets.CODESIGN_IDENTITY }}
+          NOTARIZATION_APPLE_ID: ${{ secrets.NOTARIZATION_APPLE_ID }}
+          NOTARIZATION_TEAM_ID: ${{ secrets.NOTARIZATION_TEAM_ID }}
+          NOTARIZATION_PASSWORD: ${{ secrets.NOTARIZATION_PASSWORD }}
         run: |
           chmod +x scripts/build_app.sh
           ./scripts/build_app.sh
 
-      - name: Package app
+      - name: Package signed and stapled app
         run: |
           cd dist
-          zip -r "../AareTempBar-macos.zip" "AareTempBar.app"
+          rm -f "../AareTempBar-macos.zip"
+          ditto -c -k --keepParent "AareTempBar.app" "../AareTempBar-macos.zip"
           cd ..
 
       - name: Create GitHub Release
